@@ -32,3 +32,20 @@ $ conda activate <env_name>
 ```
 
 
+## Installation : 
+
+### Install the required packages
+
+```bash
+$ pip install -r requirements.txt
+```
+
+### Setup the environment variables
+
+Set your environment variables in the `.env` file. 
+
+```bash
+$ cp .env.example .env
+```
+
+
