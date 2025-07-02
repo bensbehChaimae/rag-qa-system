@@ -26,21 +26,27 @@ This step involves:
 - Chunking the extracted text into smaller pieces (documents/passages).
 
 - Parsing and cleaning the data as needed.
-![Data parsing](assests/Data_parsing.png)
+
+![Data parsing](assets/Data_parsing.png)
 
 
-Indexing
-The chunks are converted into embeddings using an embedding model.
+**Indexing**
 
-The embeddings are stored in a vector store for efficient similarity search.
+![indexing](assets/Indexing.png)
 
-### 3. Search for Similar Documents :
+- The chunks are converted into embeddings using an embedding model.
+
+- The embeddings are stored in a vector store for efficient similarity search.
+
+### 3. Search for Similar Documents (`Semantic Search`):
 
 When a query is submitted:
 
 - The query is converted into an embedding.
 
 - A similarity search is performed against the vector store to retrieve the most relevant chunks.
+
+![search](assets/Semantic_search.png)
 
 ### 4. Generate the Answer :
 
@@ -50,6 +56,7 @@ When a query is submitted:
 
 - The LLM returns a response grounded in the relevant information.
 
+![answer](assets/Get_answer.png)
 
 ## Requirements :
 
