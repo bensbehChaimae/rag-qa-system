@@ -2,6 +2,55 @@
 
 An mini implementation of The RAG model for question answering 
 
+
+
+# RAG (Retrieval-Augmented Generation) Application Workflow :
+
+Traditional language models (LLMs) generate answers based only on the knowledge they were trained on. This can lead to outdated or hallucinated responses, especially when dealing with domain-specific or dynamic information.
+
+`Retrieval-Augmented Generation (RAG)` Architeture solves this by combining the power of information retrieval and language generation. Instead of relying solely on the model’s internal knowledge, RAG pipelines retrieve relevant documents from an external knowledge base and use them to ground the model's answers.
+
+In a typical RAG pipeline: 
+
+### 1. Upload a Document:
+
+- The user uploads one or more documents (PDF, TXT, etc.) to be used as the knowledge base.
+
+
+### 2. Process the Document :
+
+This step involves:
+
+- Extracting text from the uploaded files.
+
+- Chunking the extracted text into smaller pieces (documents/passages).
+
+- Parsing and cleaning the data as needed.
+![Data parsing](assests/Data_parsing.png)
+
+
+Indexing
+The chunks are converted into embeddings using an embedding model.
+
+The embeddings are stored in a vector store for efficient similarity search.
+
+### 3. Search for Similar Documents :
+
+When a query is submitted:
+
+- The query is converted into an embedding.
+
+- A similarity search is performed against the vector store to retrieve the most relevant chunks.
+
+### 4. Generate the Answer :
+
+- A prompt is constructed using the user query and retrieved documents.
+
+- The prompt is passed to an LLM (Large Language Model).
+
+- The LLM returns a response grounded in the relevant information.
+
+
 ## Requirements :
 
 - Python 3.12
