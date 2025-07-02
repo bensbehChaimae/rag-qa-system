@@ -27,12 +27,12 @@ This step involves:
 
 - Parsing and cleaning the data as needed.
 
-![Data parsing](assets/Data_parsing.png)
+![Data parsing](src/assets/Data_parsing.png)
 
 
 **Indexing**
 
-![indexing](assets/Indexing.png)
+![indexing](src/assets/Indexing.png)
 
 - The chunks are converted into embeddings using an embedding model.
 
@@ -46,7 +46,7 @@ When a query is submitted:
 
 - A similarity search is performed against the vector store to retrieve the most relevant chunks.
 
-![search](assets/Semantic_search.png)
+![search](src/assets/Semantic_search.png)
 
 ### 4. Generate the Answer :
 
@@ -56,7 +56,7 @@ When a query is submitted:
 
 - The LLM returns a response grounded in the relevant information.
 
-![answer](assets/Get_answer.png)
+![answer](src/assets/Get_answer.png)
 
 ## Requirements :
 
