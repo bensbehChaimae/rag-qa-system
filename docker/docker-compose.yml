@@ -1,0 +1,22 @@
+services:
+  db_service:
+    image: mongo:7.0-jammy
+    
+    container_name: mongodb
+    
+    ports:
+      - "27007:27017"
+    
+    volumes:
+      - ./mongodb:/data/db
+    
+    networks:
+      - backend
+
+    # if it fails it need to restart : 
+    restart: always
+
+
+
+networks:
+  backend: 
