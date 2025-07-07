@@ -9,7 +9,7 @@ class Project(BaseModel):
     # The MongoDB document's unique identifier
     # We don't provide _id when creating a new document — MongoDB generates it automatically
     # After insertion, the document will include this _id field
-    _id: Optional[ObjectId]
+    id: Optional[ObjectId] = Field(None , alias="_id")
 
     # The project_id is a required field (cannot be missing or empty)
     # It must be a string with at least one character
