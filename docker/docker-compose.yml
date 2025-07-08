@@ -28,3 +28,4 @@ networks:
 
 volumes:
   mongodata:
+  
