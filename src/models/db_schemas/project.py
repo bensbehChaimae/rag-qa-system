@@ -6,7 +6,8 @@ from bson.objectid import ObjectId
 
 class Project(BaseModel):
 
-    # The MongoDB document's unique identifier
+
+    # The MongoDB document's unique identifiers
     # We don't provide _id when creating a new document — MongoDB generates it automatically
     # After insertion, the document will include this _id field
     id: Optional[ObjectId] = Field(None , alias="_id")

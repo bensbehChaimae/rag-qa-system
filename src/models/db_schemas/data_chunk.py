@@ -7,7 +7,7 @@ from bson.objectid import ObjectId
 
 class DataChunk(BaseModel):
     
-    # ... is an elipsis mean the files is required :
+    # ...  is an elipsis mean the files is required 
 
     id: Optional[ObjectId] = Field(None , alias="_id")
     chunk_text: str = Field(... , min_length=1)

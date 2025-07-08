@@ -1,5 +1,5 @@
 
-# ------- This file defines the project (collection) DB schema --------------------------------------
+# -------- This file defines the project (collection) DB schema --------------------------------------
 
 from .BaseDataModel import BaseDataModel
 # import the project schema 
