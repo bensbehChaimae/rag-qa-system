@@ -120,3 +120,14 @@ $ uvicorn main:app --reload
 $ uvicorn main:app --reload --host 0.0.0.0 --port 5000
 ```
 
+
+## Run docker compose service :
+
+Copy `.env.example` in your `.env` and update it with your credentials.
+
+```bash
+$ cd docker
+$ cp .env.example .env
+```
+
+
