@@ -3,6 +3,8 @@ from typing import Optional
 from bson.objectid import ObjectId
 
 
+# ----------------------------- Project collection ---------------------------------
+
 
 class Project(BaseModel):
 
