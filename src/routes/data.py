@@ -2,27 +2,24 @@ from fastapi import FastAPI , APIRouter , Depends , UploadFile, status, Request
 from fastapi.responses import JSONResponse
 import os 
 from utils.config import get_settings , Settings 
-
 # from controllers.DataController import DataController
-from controllers import DataController
-from controllers import ProjectController
-from controllers import ProcessController
+from controllers import DataController, ProjectController, ProcessController
+
 import aiofiles
-
 from models import ResponseSignal 
-
 import logging
 # Define a logging object 
 logger = logging.getLogger('uvicorn.error')
 
 
 from routes.schemas.data import ProcessRequest
-
 from models.ProjectModel import ProjectModel
 from models.ChunkModel import ChunkModel
-
 from models.db_schemas import DataChunk
+from models.AssetModel import AssetModel, Asset
+from models.enums.AssetTypeEnum import AssetTypeEnum
 
+from bson import ObjectId
 
 data_router = APIRouter(
     prefix = "/api/v1/data",
@@ -83,10 +80,26 @@ async def upload_data(request: Request , project_id: str, file: UploadFile ,
         )
 
 
+
+    # Store the asset into the database :
+    asset_model = await AssetModel.create_instance(
+        db_client=request.app.db_client
+    )
+
+    # Create asset : 
+    asset_resource = Asset(
+        asset_project_id= project.id,
+        asset_type= AssetTypeEnum.FILE.value,
+        asset_name= file_id,
+        asset_size= os.path.getsize(file_path)
+    )
+
+    asset_record = await asset_model.create_asset(asset=asset_resource)
+
     return JSONResponse(
             content = {
                 "signal" : ResponseSignal.FILE_UPLOAD_SUCCESS.value,
-                "file_id" : file_id
+                "file_id": str(asset_record.id)
             }
         )
 
