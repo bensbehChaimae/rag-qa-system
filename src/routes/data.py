@@ -126,16 +126,34 @@ async def process_endpoint(request: Request, project_id: str , process_request: 
     )
 
 
-    
+    asset_model = await AssetModel.create_instance(
+        db_client=request.app.db_client
+    )
+
     # Get the files : 
-    project_files_ids = []
+    project_files_ids = {}
     if process_request.file_id:
-        project_files_ids = [process_request.file_id]
+        asset_record = await asset_model.get_asset_record(
+            asset_project_id= project.id ,
+            asset_name= process_request.file_id
+        )
+
+        if asset_record is None : 
+            return JSONResponse(
+                status_code= status.HTTP_400_BAD_REQUEST,
+                content={
+                    "signal" : ResponseSignal.FILE_ID_ERROR.value,
+                }
+            )
+
+
+        project_files_ids = {
+            asset_record.id : asset_record.asset_name
+        }
+
+
     # get the files from the database : 
     else:
-        asset_model = await AssetModel.create_instance(
-        db_client=request.app.db_client
-        )
 
         project_files = await asset_model.get_all_project_assets(
             asset_project_id= project.id ,
@@ -156,7 +174,7 @@ async def process_endpoint(request: Request, project_id: str , process_request: 
             content={
                 "signal" : ResponseSignal.NO_FILES_ERROR.value,
             }
-    )
+        )
 
 
 
