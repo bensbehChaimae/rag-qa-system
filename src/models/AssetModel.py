@@ -43,10 +43,18 @@ class AssetModel(BaseDataModel) :
     
 
 
-    async def get_all_project_assets(self, asset_project_id: Asset ):
-        return await self.collection.find({
-            "asset_project_id": ObjectId(asset_project_id) if isinstance(asset_project_id, str) else asset_project_id
+    async def get_all_project_assets(self, asset_project_id: Asset , asset_type: str):
+        
+        records =  await self.collection.find({
+            "asset_project_id": ObjectId(asset_project_id) if isinstance(asset_project_id, str) else asset_project_id ,
+            "asset_type" : asset_type ,
         }).to_list(length=None)
+
+        # turn the records to pydantic models :
+        return [
+            Asset(**record)
+            for record in records
+        ]
     
 
     
