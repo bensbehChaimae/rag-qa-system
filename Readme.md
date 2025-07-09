@@ -1,4 +1,4 @@
-# Mini Rag app 
+# Rag application 
 
 An mini implementation of The RAG model for question answering 
 
