@@ -1,6 +1,9 @@
 # Rag application 
 
-An mini implementation of The RAG model for question answering 
+An implementation of a Retrieval-Augmented Generation (RAG) model for question answering.
+This app allows users to upload documents and ask questions, returning context-aware answers based on the uploaded content.
+
+
 
 
 
