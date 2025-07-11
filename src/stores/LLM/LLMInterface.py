@@ -22,13 +22,13 @@ class LLMInterface(ABC):
 
     @abstractmethod
     # Temperature parameter: The closer it is to 0, the model becomes more deterministic—it generates less creative responses and sticks more to factual and predictable outputs.
-    def generate_text(self, prompt: str , max_output_tokens: int, temperature: float = None):
+    def generate_text(self, prompt: str , chat_history: list=[], max_output_tokens: int=None ,  temperature: float = None):
         pass 
 
 
     @abstractmethod
     # input = text -> ouput = vector 
-    def embed_text(self, text: str, document_type: str ):
+    def embed_text(self, text: str, document_type: str = None ):
         pass 
 
 
