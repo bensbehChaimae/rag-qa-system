@@ -1,4 +1,4 @@
-from fastapi import FastAPI , APIRouter , Depends , UploadFile, status, Request
+from fastapi import FastAPI , APIRouter , Depends , UploadFile, status, Request, File
 from fastapi.responses import JSONResponse
 import os 
 from utils.config import get_settings , Settings 
@@ -29,13 +29,12 @@ data_router = APIRouter(
 
 # Define the upload endpoint :
 @data_router.post("/upload/{project_id}") 
-async def upload_data(request: Request , project_id: str, file: UploadFile , 
+async def upload_data(request: Request , project_id: str, file: UploadFile, 
                       app_settings: Settings = Depends(get_settings)):
     
 
     project_model = await ProjectModel.create_instance(
         db_client=request.app.db_client
-
     )
 
     project = await project_model.get_project_or_create_one(

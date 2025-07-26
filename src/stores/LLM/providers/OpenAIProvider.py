@@ -22,8 +22,8 @@ class OpenAIProvider(LLMInterface):
         self.embedding_size = None
 
         self.client = OpenAI(
-            api_key = self.api_key ,
-            api_url = self.api_url
+            api_key = self.api_key #,
+            # api_url = self.api_url
         )
 
         # Define a logger inside a class : 

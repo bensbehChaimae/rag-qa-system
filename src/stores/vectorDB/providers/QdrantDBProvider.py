@@ -13,12 +13,18 @@ class QdrantDBProvider(VectorDBInterface):
 
         self.client = None
         self.db_path = db_path
-        self.distance_method = None
+        # I added this 
+        self.distance_method = models.Distance.COSINE
+        # self.distance_method = None
 
         if distance_method == DistanceMethodEnums.COSINE.value :
             distance_method = models.Distance.COSINE
         elif distance_method == DistanceMethodEnums.DOT.value :
             distance_method = models.Distance.DOT
+        # And I added this 
+        else : 
+            distance_method = models.Distance.COSINE
+
 
         # Define a logger inside a class : 
         self.logger = logging.getLogger(__name__)
@@ -90,6 +96,7 @@ class QdrantDBProvider(VectorDBInterface):
                 collection_name=collection_name,
                 records=[
                     models.Record(
+                        id=[record_id],
                         vector=vector,
                         payload={
                             "text": text, "metadata": metadata
@@ -112,7 +119,7 @@ class QdrantDBProvider(VectorDBInterface):
             metadata = [None] * len(texts)
 
         if record_ids is None:
-            record_ids = [None] * len(texts)
+            record_ids = list(range(0, len(texts)))
          
         for i in range(0, len(texts), batch_size):
             batch_end = i + batch_size
@@ -120,9 +127,12 @@ class QdrantDBProvider(VectorDBInterface):
             batch_texts = texts[i:batch_end]
             batch_vectors = vectors[i:batch_end]
             batch_metadata = metadata[i:batch_end]
+            batch_record_ids = record_ids[i:batch_end]
+
 
             batch_records = [
                 models.Record(
+                    id=batch_record_ids[x],
                     vector=batch_vectors[x],
                     payload={
                         "text": batch_texts[x], "metadata": batch_metadata[x]

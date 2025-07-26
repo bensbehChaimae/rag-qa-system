@@ -25,6 +25,9 @@ class Settings(BaseSettings) :
     OPENAI_API_URL: str=None
     COHERE_API_KEY: str=None
 
+    COHERE_RATE_LIMIT_PER_MINUTE: int=None
+    COHERE_MAX_RETRIES: int=None
+
     GENRERATION_MODEL_ID: str=None
     EMBEDDING_MODEL_ID: str=None
     EMBEDDING_MODEL_SIZE: int=None
@@ -36,6 +39,8 @@ class Settings(BaseSettings) :
     VECTOR_DB_BACKEND : str
     VECTOR_DB_PATH : str
     VECTOR_DB_DISTANCE_METHOD: str = None
+
+
 
 
 
