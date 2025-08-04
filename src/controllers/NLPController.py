@@ -109,6 +109,8 @@ class NLPController(BaseController):
             limit=limit
         )
 
+        print(results)
+
         if not results:
             logger.error("VectorDB search returned no results or failed")
             return False
