@@ -3,8 +3,9 @@ from models.db_schemas import Project, DataChunk
 from stores.LLM.LLMEnums import DocumentTypeEnum
 from typing import List
 import json
+import logging # this 
 
-
+logger = logging.getLogger('uvicorn.error') # this 
 
 class NLPController(BaseController):
     
@@ -79,15 +80,27 @@ class NLPController(BaseController):
 
     def search_vector_db_collection(self, project: Project, text: str, limit: int = 5):
 
+        logger.info(f"Searching vector DB for text: {text}") # this 
+
         # step1: get collection name
         collection_name = self.create_collection_name(project_id=project.project_id)
 
         # step2: get text embedding vector
         vector = self.embedding_client.embed_text(text=text, 
                                                  document_type=DocumentTypeEnum.QUERY.value)
+        
+        try:
+            vector = self.embedding_client.embed_text(text=text, document_type=DocumentTypeEnum.QUERY.value)
+        except Exception as e:
+            logger.error(f"Embedding error: {e}")
+            return False
 
         if not vector or len(vector) == 0:
+            logger.error("Embedding returned empty vector")
             return False
+
+        logger.info(f"Embedding vector obtained, length={len(vector)}")
+
 
         # step3: do semantic search
         results = self.vectordb_client.search_by_vector(
@@ -97,7 +110,10 @@ class NLPController(BaseController):
         )
 
         if not results:
+            logger.error("VectorDB search returned no results or failed")
             return False
+        
+        logger.info(f"VectorDB search returned {len(results)} results")
 
         return json.loads(
             json.dumps(results, default=lambda x: x.__dict__)

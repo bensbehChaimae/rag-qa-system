@@ -97,7 +97,7 @@ class CoHereProvider(LLMInterface):
 
         
         # Validation : 
-        if not response or not response.embeddings or response.embeddings.float :
+        if not response or not response.embeddings or not response.embeddings.float :
             self.logger.error("Error while Embedding text with CoHere")
             return None 
         
