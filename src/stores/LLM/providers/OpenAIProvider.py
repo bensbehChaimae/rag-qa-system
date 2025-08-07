@@ -22,9 +22,11 @@ class OpenAIProvider(LLMInterface):
         self.embedding_size = None
 
         self.client = OpenAI(
-            api_key = self.api_key #,
-            # api_url = self.api_url
+            api_key = self.api_key 
+            # base_url = self.api_url if self.api_url and len(self.api_url) else None
         )
+
+        self.enums = OpenAIEnums
 
         # Define a logger inside a class : 
         self.logger = logging.getLogger(__name__)
@@ -82,7 +84,7 @@ class OpenAIProvider(LLMInterface):
             return None 
         
 
-        return response.choices[0].message
+        return response.choices[0].message.content
 
 
 

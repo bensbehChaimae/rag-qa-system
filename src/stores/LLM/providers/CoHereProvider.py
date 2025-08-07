@@ -25,6 +25,8 @@ class CoHereProvider(LLMInterface):
         # self.client = cohere.ClientV2(api_key = self.api_key)
         self.client = cohere.Client(api_key = self.api_key)
 
+        self.enums = CoHereEnums
+
         # Define a logger inside a class : 
         self.logger = logging.getLogger(__name__)
 
@@ -105,20 +107,6 @@ class CoHereProvider(LLMInterface):
         return response.embeddings.float[0]
     
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
