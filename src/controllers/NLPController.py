@@ -129,6 +129,7 @@ class NLPController(BaseController):
     def answer_rag_question(self, project: Project, query: str, limit: int = 5):
 
         answer, full_prompt, chat_history = None, None, None
+        logger.info(f"[RAG] Starting answer_rag_question for project: {project}, query: '{query}', limit: {limit}")
 
         # Step 1 : retrieved related documents 
         retrieved_documents = self.search_vector_db_collection(
@@ -136,14 +137,19 @@ class NLPController(BaseController):
             text=query, 
             limit=limit
         )
+
+        logger.info(f"[RAG] Retrieved {len(retrieved_documents) if retrieved_documents else 0} documents")
         
         # if not retrieved_documents or len(retrieved_documents) == 0 :
-        if not retrieved_documents or len(retrieved_documents) :
+        if not retrieved_documents or len(retrieved_documents) == 0  :
+            logger.info("[RAG] No documents retrieved or invalid length. Returning None values.")
             return answer, full_prompt, chat_history
         
 
+
         # Step 2 : construct LLM prompt 
         system_prompt = self.template_parser.get("rag", "system_prompt")
+        logger.info(f"[RAG] System prompt loaded ({len(system_prompt)} chars)")
 
         # documents_prompts = []
         # for idx, doc in enumerate(documents_prompts):
@@ -163,7 +169,11 @@ class NLPController(BaseController):
             for idx, doc in enumerate(retrieved_documents)
         ])
 
+        logger.info(f"[RAG] Constructed documents_prompts ({len(documents_prompts)} chars)")
+
         footer_prompt = self.template_parser.get("rag", "footer_prompt")
+
+        logger.info(f"[RAG] Footer prompt loaded ({len(footer_prompt)} chars)")
 
 
         # step3: Construct Generation Client Prompts
@@ -174,7 +184,13 @@ class NLPController(BaseController):
             )
         ]
 
+        logger.info(f"[RAG] Chat history initialized with {len(chat_history)} messages")
+
         full_prompt = "\n\n".join([ documents_prompts,  footer_prompt])
+
+        logger.info(f"[RAG] Full prompt length: {len(full_prompt)} characters")
+
+
 
 
         # step4: Retrieve the Answer
@@ -182,6 +198,10 @@ class NLPController(BaseController):
             prompt=full_prompt,
             chat_history=chat_history
         )
+    
+        print(answer)
+
+        logger.info(f"[RAG] Generated answer length: {len(answer) if answer else 0}")
 
         return answer, full_prompt, chat_history
     

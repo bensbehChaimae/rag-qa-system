@@ -67,15 +67,28 @@ class OpenAIProvider(LLMInterface):
 
         # Chat history : 
         chat_history.append(
-            self.construct_prompt(prompt = prompt, role = OpenAIEnums.user.value)
+            self.construct_prompt(prompt = prompt, role = OpenAIEnums.USER.value)
         )
+ 
+        try:
+            
+            self.logger.info(f"Calling OpenAI model: {self.generation_model_id}")
+            self.logger.info(f"Max tokens: {max_output_tokens}, Temperature: {temperature}")
+            self.logger.debug(f"Chat history: {chat_history}")
 
-        response = self.client.chat.completions.create(
-            model = self.generation_model_id,
-            messages = chat_history,
-            max_tokens = max_output_tokens,
-            temperature = temperature
-        )
+            response = self.client.chat.completions.create(
+                model=self.generation_model_id,
+                messages=chat_history,
+                max_tokens=max_output_tokens,
+                temperature=temperature
+            )
+
+            self.logger.info(f"OpenAI API response received: {type(response)}")
+
+        except Exception as e:
+            self.logger.exception(f"Exception while calling OpenAI API: {e}")
+            return None
+
 
         # validation :
         if not response or not response.choices or len(response.choices)== 0 or not response.choices[0].message :
