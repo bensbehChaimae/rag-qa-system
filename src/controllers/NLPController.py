@@ -171,7 +171,12 @@ class NLPController(BaseController):
 
         logger.info(f"[RAG] Constructed documents_prompts ({len(documents_prompts)} chars)")
 
-        footer_prompt = self.template_parser.get("rag", "footer_prompt")
+
+
+        footer_prompt = self.template_parser.get("rag", "footer_prompt", {
+            "query": query
+        })
+        
 
         logger.info(f"[RAG] Footer prompt loaded ({len(footer_prompt)} chars)")
 
