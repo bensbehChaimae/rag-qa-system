@@ -82,14 +82,13 @@ class NLPController(BaseController):
 
     def search_vector_db_collection(self, project: Project, text: str, limit: int = 5):
 
-        logger.info(f"Searching vector DB for text: {text}") # this 
+        logger.info(f"Searching vector DB for text: {text}") 
 
         # step1: get collection name
         collection_name = self.create_collection_name(project_id=project.project_id)
+        logger.info(f"Getting collection name")
 
         # step2: get text embedding vector
-        vector = self.embedding_client.embed_text(text=text, 
-                                                 document_type=DocumentTypeEnum.QUERY.value)
         
         try:
             vector = self.embedding_client.embed_text(text=text, document_type=DocumentTypeEnum.QUERY.value)
