@@ -7,6 +7,7 @@ from stores.vectorDB.VectorDBProviderFactory import VectorDBProviderFactory
 from stores.LLM.templates.template_parser import TemplateParser
 
 
+
 # Define the fastapi app :
 app = FastAPI()
 
@@ -31,11 +32,11 @@ async def startup_span():
     # generation client : 
     app.generation_client = llm_provider_factory.create(provider=settings.GENERATION_BACKEND)
     app.generation_client.set_generation_model(model_id= settings.GENRERATION_MODEL_ID)
+    
 
     # embedding client :
     app.embedding_client = llm_provider_factory.create(provider=settings.EMBEDDING_BACKEND)
     app.embedding_client.set_embedding_model(model_id= settings.EMBEDDING_MODEL_ID, embedding_size=settings.EMBEDDING_MODEL_SIZE)
-
 
     # vector_db client : 
     app.vectordb_client = vectordb_provider_factory.create(
