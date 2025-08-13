@@ -86,6 +86,8 @@ class OpenAIProvider(LLMInterface):
             self.logger.info(f"OpenAI API response received: {type(response)}")
 
         except Exception as e:
+            # print("api url " , self.api_url)
+            # print("generation model:", self.generation_model_id)
             self.logger.exception(f"Exception while calling OpenAI API: {e}")
             return None
 
