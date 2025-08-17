@@ -95,6 +95,16 @@ $ conda activate <env_name>
 
 ### Install the required packages
 
+#### Prerequisites for Linux/WSL :
+
+Before installing the Python dependencies, ensure that the required system packages are installed to avoid compilation or runtime errors:
+
+```bash
+$ sudo apt update 
+$ sudo apt install libpq-dev gcc python3-dev
+```
+Once the system packages are in place, install the Python dependencies from the requirements file:
+
 ```bash
 $ pip install -r requirements.txt
 ```
