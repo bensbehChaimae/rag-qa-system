@@ -150,20 +150,11 @@ class NLPController(BaseController):
         system_prompt = self.template_parser.get("rag", "system_prompt")
         logger.info(f"[RAG] System prompt loaded ({len(system_prompt)} chars)")
 
-        # documents_prompts = []
-        # for idx, doc in enumerate(documents_prompts):
-        #     documents_prompts.append(
-        #         self.template_parser.get("rag", "document_prompt", {
-        #             "doc_num": idx+1 ,
-        #             "chunk_text": doc.text
-        #         })
-        #     )
-
         # Comprehension list :
         documents_prompts = "\n".join([
             self.template_parser.get("rag", "document_prompt", {
                     "doc_num": idx + 1,
-                    "chunk_text": doc.text,
+                    "chunk_text": self.generation_client.process_text(doc.text),
             })
             for idx, doc in enumerate(retrieved_documents)
         ])
