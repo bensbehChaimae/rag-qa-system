@@ -1,10 +1,12 @@
 from fastapi import FastAPI 
 from routes import base , data, nlp
-from motor.motor_asyncio import AsyncIOMotorClient
+# from motor.motor_asyncio import AsyncIOMotorClient  ==> no longer needed to create a connexion to mongoDB
 from utils.config import get_settings
 from stores.LLM.LLMProviderFactory import LLMProviderFactory
 from stores.vectorDB.VectorDBProviderFactory import VectorDBProviderFactory
 from stores.LLM.templates.template_parser import TemplateParser
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
 
 
 
@@ -19,12 +21,29 @@ async def startup_span():
     settings = get_settings()
 
 
-    # MongoDB connection --> Create an asynchronous MongoDB client using Motor
-    # This connects to the MongoDB server using the URL from settings   
-    app.mongo_conn = AsyncIOMotorClient(settings.MONGODB_URL)
-    # Access the specific database defined in the settings
-    app.db_client = app.mongo_conn[settings.MONGODB_DATABASE]
+    # # MongoDB connection --> Create an asynchronous MongoDB client using Motor
+    # # This connects to the MongoDB server using the URL from settings   
+    # app.mongo_conn = AsyncIOMotorClient(settings.MONGODB_URL)
+    # app.db_client = app.mongo_conn[settings.MONGODB_DATABASE]
 
+
+    # Postgres connection (migration from mongodb) :
+    postgres_conn = f"postgresql+asyncpg://{settings.POSTGRES_USERNAME}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_MAIN_DATABASE}"
+
+    app.db_engine = create_async_engine(postgres_conn)
+
+    app.db_client = sessionmaker(
+        app.db_engine, class_=AsyncSession, expire_on_commit=False
+    )
+
+
+
+
+
+
+
+
+    
     llm_provider_factory = LLMProviderFactory(settings)
     vectordb_provider_factory = VectorDBProviderFactory(settings)
 
@@ -60,7 +79,8 @@ async def startup_span():
 # This function runs once when the FastAPI app is shutting down (used to clean up resources like closing the database connection)
 # @app.on_event("shutdown") ---> decrepted 
 async def shutdown_span():
-    app.mongo_conn.close()
+    # app.mongo_conn.close()
+    app.db_engine.dispose()
     app.vectordb_client.disconnect()
 
 
