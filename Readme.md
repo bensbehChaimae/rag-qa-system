@@ -30,9 +30,6 @@ This app allows users to upload documents and ask questions, returning context-a
 
 
 
-
-
-
 # RAG (Retrieval-Augmented Generation) Application Workflow :
 
 Traditional language models (LLMs) generate answers based only on the knowledge they were trained on. This can lead to outdated or hallucinated responses, especially when dealing with domain-specific or dynamic information.
