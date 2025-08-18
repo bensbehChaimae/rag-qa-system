@@ -2,6 +2,7 @@ from ..LLMInterface import LLMInterface
 from ..LLMEnums import OpenAIEnums
 from openai import OpenAI
 import logging
+from typing import List, Union
 
 class OpenAIProvider(LLMInterface):
 
@@ -46,8 +47,6 @@ class OpenAIProvider(LLMInterface):
     # This function was not set on the interface cause some providers won't need it :
     def process_text(self, text: str):
         return text[:self.default_input_max_characters].strip()
-
-
 
 
 
@@ -103,11 +102,14 @@ class OpenAIProvider(LLMInterface):
 
 
 
-    def embed_text(self, text: str, document_type: str = None ):
-        # validation 
+    def embed_text(self, text: Union[str, List[str]], document_type: str = None ):
+        
         if not self.client:
             self.logger.error("OpenAI client was not set")
             return None
+        
+        if isinstance(text, str):
+            text = [text]
         
         if not self.embedding_model_id:
             self.logger.error("Embedding model for OpenAI was not set")
@@ -122,7 +124,7 @@ class OpenAIProvider(LLMInterface):
             self.logger.error("Error while embedding with OpenAI")
             return None
         
-        return response.data[0].embedding
+        return [ rec.embedding for rec in response.data ]
     
 
 
