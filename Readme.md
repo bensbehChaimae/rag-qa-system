@@ -5,27 +5,32 @@ This app allows users to upload documents and ask questions, returning context-a
 
 
 <!-- Language & Frameworks -->
+**Lanuages and Frameworks :**
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Asynchronous-green.svg)
 ![Uvicorn](https://img.shields.io/badge/Uvicorn-ASGI-red.svg)
 ![Pydantic](https://img.shields.io/badge/Pydantic-v2+-green.svg)
 
 <!-- Databases -->
+**Databases :**
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue.svg?logo=postgresql)
 ![MongoDB](https://img.shields.io/badge/MongoDB-6.x-green.svg?logo=mongodb)
 ![pgvector](https://img.shields.io/badge/pgvector-0.5+-orange.svg)
 ![Qdrant](https://img.shields.io/badge/Qdrant-VectorDB-blueviolet.svg)
 
 <!-- ORM & Migrations -->
+**ORM & Migrations :**
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-red.svg)
 ![Alembic](https://img.shields.io/badge/Alembic-Migrations-lightgrey.svg)
 
 <!-- LLM Providers -->
+**LLms providers :**
 ![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
 ![Cohere](https://img.shields.io/badge/Cohere-LLM-purple.svg)
 ![Ollama](https://img.shields.io/badge/Ollama-Local-orange.svg)
 
 <!-- Utilities -->
+**Utilities :**
 ![ngrok](https://img.shields.io/badge/ngrok-SecureTunnel-orange.svg)
 
 
