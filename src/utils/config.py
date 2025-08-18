@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import List
 
 
 class Settings(BaseSettings) :
@@ -28,6 +29,7 @@ class Settings(BaseSettings) :
     COHERE_RATE_LIMIT_PER_MINUTE: int=None
     COHERE_MAX_RETRIES: int=None
 
+    GENERATION_MODEL_ID_LITERAL: List[str] = None
     GENRERATION_MODEL_ID: str=None
     EMBEDDING_MODEL_ID: str=None
     EMBEDDING_MODEL_SIZE: int=None
@@ -50,11 +52,18 @@ class Settings(BaseSettings) :
     POSTGRES_PORT: int
     POSTGRES_MAIN_DATABASE: str
 
+
+    VECTOR_DB_BACKEND_LITERAL: List[str] = None
+    VECTOR_DB_BACKEND : str
+    VECTOR_DB_PATH : str
+    VECTOR_DB_DISTANCE_METHOD: str = None
+    VECTOR_DB_PGVEC_INDEX_THRESHOLD: int = 100
+
+
+    # class Config:
+    #     env_file = ".env" 
+
     
-
-
-
-
 
     
 def get_settings():
