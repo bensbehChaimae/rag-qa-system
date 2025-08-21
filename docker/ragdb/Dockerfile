@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libavif-dev pkg-config \
     libjpeg-dev \
+    libpq-dev \
     gcc unzip zip \
     python3-dev \
     libxml2-dev \
