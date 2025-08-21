@@ -1,7 +1,7 @@
 from fastapi import FastAPI , APIRouter , Depends , UploadFile, status, Request, File
 from fastapi.responses import JSONResponse
 import os 
-from utils.config import get_settings , Settings 
+from helpers.config import get_settings , Settings 
 # from controllers.DataController import DataController
 from controllers import DataController, ProjectController, ProcessController
 

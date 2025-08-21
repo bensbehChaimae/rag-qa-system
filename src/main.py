@@ -1,17 +1,22 @@
 from fastapi import FastAPI 
 from routes import base , data, nlp
 # from motor.motor_asyncio import AsyncIOMotorClient  ==> no longer needed to create a connexion to mongoDB
-from utils.config import get_settings
+from helpers.config import get_settings
 from stores.LLM.LLMProviderFactory import LLMProviderFactory
 from stores.vectorDB.VectorDBProviderFactory import VectorDBProviderFactory
 from stores.LLM.templates.template_parser import TemplateParser
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
+# Import metrics setup
+from utils.metrics import setup_metrics
 
 
 # Define the fastapi app :
 app = FastAPI()
+
+# Setup Prometheus metrics
+setup_metrics(app)
 
 
 # This function runs once when the FastAPI app starts (used to set up resources like database connections)
