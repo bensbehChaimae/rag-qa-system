@@ -7,6 +7,8 @@ services:
     container_name: fastapi
     ports:
       - "8000:8000"
+    volumes:
+      - fastapi_data:/app/assets
     networks:
       - backend
     restart: always
@@ -167,6 +169,7 @@ networks:
 
 
 volumes:
+  fastapi_data:
   pgvector:
   qdrant_data:
   prometheus_data:
