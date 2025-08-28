@@ -1,7 +1,7 @@
 from fastapi import FastAPI , APIRouter , Depends , UploadFile, status, Request, File
 from fastapi.responses import JSONResponse
 import os 
-from utils.config import get_settings , Settings 
+from helpers.config import get_settings , Settings 
 # from controllers.DataController import DataController
 from controllers import DataController, ProjectController, ProcessController
 
@@ -18,8 +18,12 @@ from models.ChunkModel import ChunkModel
 from models.db_schemas import DataChunk
 from models.AssetModel import AssetModel, Asset
 from models.enums.AssetTypeEnum import AssetTypeEnum
-
 from bson import ObjectId
+from controllers import NLPController
+
+
+
+
 
 data_router = APIRouter(
     prefix = "/api/v1/data",
@@ -29,7 +33,7 @@ data_router = APIRouter(
 
 # Define the upload endpoint :
 @data_router.post("/upload/{project_id}") 
-async def upload_data(request: Request , project_id: str, file: UploadFile, 
+async def upload_data(request: Request , project_id: int, file: UploadFile, 
                       app_settings: Settings = Depends(get_settings)):
     
 
@@ -40,6 +44,7 @@ async def upload_data(request: Request , project_id: str, file: UploadFile,
     project = await project_model.get_project_or_create_one(
         project_id = project_id
     )
+
 
 
     # Validate the file properties : 
@@ -87,7 +92,7 @@ async def upload_data(request: Request , project_id: str, file: UploadFile,
 
     # Create asset : 
     asset_resource = Asset(
-        asset_project_id= project.id,
+        asset_project_id= project.project_id,  # this project.id
         asset_type= AssetTypeEnum.FILE.value,
         asset_name= file_id,
         asset_size= os.path.getsize(file_path)
@@ -98,7 +103,7 @@ async def upload_data(request: Request , project_id: str, file: UploadFile,
     return JSONResponse(
             content = {
                 "signal" : ResponseSignal.FILE_UPLOAD_SUCCESS.value,
-                "file_id": str(asset_record.id)
+                "file_id": str(asset_record.asset_id)           # asset_record.id
             }
         )
 
@@ -106,7 +111,7 @@ async def upload_data(request: Request , project_id: str, file: UploadFile,
 
 # Define the process endpoint 
 @data_router.post("/process/{project_id}") 
-async def process_endpoint(request: Request, project_id: str , process_request: ProcessRequest):
+async def process_endpoint(request: Request, project_id: int, process_request: ProcessRequest):
 
     # process_request from routes/schemas/data.py that define the schema of data loaded
     # file_id = process_request.file_id
@@ -124,6 +129,13 @@ async def process_endpoint(request: Request, project_id: str , process_request: 
         project_id=project_id
     )
 
+    nlp_controller = NLPController(
+        vectordb_client=request.app.vectordb_client,
+        generation_client=request.app.generation_client,
+        embedding_client=request.app.embedding_client,
+        template_parser=request.app.template_parser,
+    )
+
 
     asset_model = await AssetModel.create_instance(
         db_client=request.app.db_client
@@ -133,7 +145,7 @@ async def process_endpoint(request: Request, project_id: str , process_request: 
     project_files_ids = {}
     if process_request.file_id:
         asset_record = await asset_model.get_asset_record(
-            asset_project_id= project.id ,
+            asset_project_id= project.project_id ,
             asset_name= process_request.file_id
         )
 
@@ -147,7 +159,7 @@ async def process_endpoint(request: Request, project_id: str , process_request: 
 
 
         project_files_ids = {
-            asset_record.id : asset_record.asset_name
+            asset_record.asset_id : asset_record.asset_name
         }
 
 
@@ -155,12 +167,12 @@ async def process_endpoint(request: Request, project_id: str , process_request: 
     else:
 
         project_files = await asset_model.get_all_project_assets(
-            asset_project_id= project.id ,
+            asset_project_id= project.project_id ,
             asset_type= AssetTypeEnum.FILE.value ,
         )
 
         project_files_ids = {
-            record.id : record.asset_name 
+            record.asset_id : record.asset_name 
             for record in project_files
         }
 
@@ -189,8 +201,13 @@ async def process_endpoint(request: Request, project_id: str , process_request: 
     )
 
     if do_reset == 1 :
+        # delete associated vectors collection
+        collection_name = nlp_controller.create_collection_name(project_id=project.project_id)
+        _ = await request.app.vectordb_client.delete_collection(collection_name=collection_name)
+
+        # delete associated chunks
         _ = await chunk_model.delete_chunks_by_project_id(
-            project_id = project.id
+            project_id=project.project_id
         )
 
     for asset_id , file_id in project_files_ids.items() :
@@ -221,7 +238,7 @@ async def process_endpoint(request: Request, project_id: str , process_request: 
                 chunk_text= chunk.page_content,
                 chunk_metadata = chunk.metadata ,
                 chunk_order = i+1 ,
-                chunk_project_id = project.id,
+                chunk_project_id = project.project_id,
                 chunk_asset_id= asset_id
             )
             for i , chunk in enumerate(file_chunks)

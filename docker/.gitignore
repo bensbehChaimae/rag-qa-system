@@ -1,3 +1,4 @@
 mongodb/
-.env
-
+env/.env*
+!env/.env.example.*
+ragdb/alembic.ini

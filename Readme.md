@@ -1,9 +1,37 @@
-# Rag application 
+# Rag application
 
 An implementation of a Retrieval-Augmented Generation (RAG) model for question answering.
 This app allows users to upload documents and ask questions, returning context-aware answers based on the uploaded content.
 
 
+<!-- Language & Frameworks -->
+**Lanuages and Frameworks :**
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-Asynchronous-green.svg)
+![Uvicorn](https://img.shields.io/badge/Uvicorn-ASGI-red.svg)
+![Pydantic](https://img.shields.io/badge/Pydantic-v2+-green.svg)
+
+<!-- Databases -->
+**Databases :**
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue.svg?logo=postgresql)
+![MongoDB](https://img.shields.io/badge/MongoDB-6.x-green.svg?logo=mongodb)
+![pgvector](https://img.shields.io/badge/pgvector-0.5+-orange.svg)
+![Qdrant](https://img.shields.io/badge/Qdrant-VectorDB-blueviolet.svg)
+
+<!-- ORM & Migrations -->
+**ORM & Migrations :**
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-red.svg)
+![Alembic](https://img.shields.io/badge/Alembic-Migrations-lightgrey.svg)
+
+<!-- LLM Providers -->
+**LLms providers :**
+![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
+![Cohere](https://img.shields.io/badge/Cohere-LLM-purple.svg)
+![Ollama](https://img.shields.io/badge/Ollama-Local-orange.svg)
+
+<!-- Utilities -->
+**Utilities :**
+![ngrok](https://img.shields.io/badge/ngrok-SecureTunnel-orange.svg)
 
 
 
@@ -95,6 +123,16 @@ $ conda activate <env_name>
 
 ### Install the required packages
 
+#### Prerequisites for Linux/WSL :
+
+Before installing the Python dependencies, ensure that the required system packages are installed to avoid compilation or runtime errors:
+
+```bash
+$ sudo apt update 
+$ sudo apt install libpq-dev gcc python3-dev
+```
+Once the system packages are in place, install the Python dependencies from the requirements file:
+
 ```bash
 $ pip install -r requirements.txt
 ```
@@ -133,4 +171,9 @@ $ cd docker
 $ cp .env.example .env
 ```
 
+
+### (Optional) Setup you command line interface for better readability
+```bash
+export PS1="\[\033[01;32m\]\u@\h:\w\n\[\033[00m\]\$ "
+```
 

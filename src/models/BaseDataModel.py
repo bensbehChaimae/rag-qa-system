@@ -3,7 +3,7 @@
 # that can be inherited by other data model classes in the project.
 
 
-from utils.config import Settings , get_settings
+from helpers.config import Settings , get_settings
 
 
 
