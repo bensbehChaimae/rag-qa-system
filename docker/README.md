@@ -29,7 +29,7 @@ cp .env.example.postgres-exporter .env.postgres-exporter
 
 # Setup the Alembic configuration for the FastAPI application
 cd ..
-cd docker/minirag
+cd docker/ragdb
 cp alembic.example.ini alembic.ini
 
 ### 2. Start the services
