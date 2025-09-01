@@ -9,7 +9,7 @@ FILE_DEFAULT_CHUNK_SIZE=512000  # 512 KB
 
 
 # ==================== mongoDB config ===============================================
-# # mongodb://username:passwrd@loacalhost:27007/
+# # mongodb://username:passwrd@localhost:27007/
 # MONGODB_URL=
 # MONGODB_DATABASE=
 
@@ -41,7 +41,7 @@ COHERE_API_KEY=
 
 # --------------------- Generation model ----------------------
 GENERATION_MODEL_ID_LITERAL=
-GENRERATION_MODEL_ID=
+GENERATION_MODEL_ID=
 
 
 
@@ -73,7 +73,7 @@ VECTOR_DB_PGVEC_INDEX_THRESHOLD=100
 
 
 # ======================= Template Configs ===============================================
-PRIMAY_LANG="en"
+PRIMARY_LANG="en"
 DEFAULT_LANG="en"
 
 
