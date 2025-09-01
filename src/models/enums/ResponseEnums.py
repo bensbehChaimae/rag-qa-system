@@ -28,6 +28,7 @@ class ResponseSignal(Enum):
     RAG_ANSWER_SUCCESS = "rag answer success"
 
     DATA_PUSH_TASK_READY = "data push task ready"
+    PROCESS_AND_PUSH_WORKFLOW_READY = "process and push workflow ready"
     
 
 
