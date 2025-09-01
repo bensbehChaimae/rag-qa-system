@@ -64,7 +64,8 @@ celery_app = Celery(
     # include celery tasks :
     include=[
         "tasks.file_processing",
-        "tasks.data_indexing"
+        "tasks.data_indexing",
+        "tasks.process_workflow"
     ]
 )
 
@@ -103,6 +104,7 @@ celery_app.conf.update(
     task_routes={
         "tasks.file_processing.process_project_files": {"queue": "file_processing"},
         "tasks.data_indexing.index_data_content": {"queue": "data_indexing"},
+        "tasks.process_workflow.process_and_push_workflow": {"queue": "process_workflow"},
     }
 
 )
