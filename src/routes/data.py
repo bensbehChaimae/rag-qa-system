@@ -21,6 +21,7 @@ from models.enums.AssetTypeEnum import AssetTypeEnum
 from bson import ObjectId
 from controllers import NLPController
 from tasks.file_processing import process_project_files
+from tasks.process_workflow import process_and_push_workflow
 
 
 
@@ -127,16 +128,14 @@ async def upload_data(request: Request , project_id: int, file: UploadFile,
 
 
 
-# Define the process endpoint 
-@data_router.post("/process/{project_id}") 
+# Define the process endpoint :
+@data_router.post("/process/{project_id}")
 async def process_endpoint(request: Request, project_id: int, process_request: ProcessRequest):
 
-    # process_request from routes/schemas/data.py that define the schema of data loaded
     chunk_size = process_request.chunk_size
     overlap_size = process_request.overlap_size
     do_reset = process_request.do_reset
 
-    # Define the celery task : 
     task = process_project_files.delay(
         project_id=project_id,
         file_id=process_request.file_id,
@@ -149,6 +148,33 @@ async def process_endpoint(request: Request, project_id: int, process_request: P
         content={
             "signal": ResponseSignal.PROCESSING_SUCCESS.value,
             "task_id": task.id
+        }
+    )
+
+
+
+# Define the process and push celery tasks endpoint : 
+@data_router.post("/process-and-push/{project_id}") 
+async def process_and_push_endpoint(request: Request, project_id: int, process_request: ProcessRequest):
+
+    # process_request from routes/schemas/data.py that define the schema of data loaded
+    chunk_size = process_request.chunk_size
+    overlap_size = process_request.overlap_size
+    do_reset = process_request.do_reset
+
+    # Define the celery task : 
+    workflow_task = process_and_push_workflow.delay(
+        project_id=project_id,
+        file_id=process_request.file_id,
+        chunk_size=chunk_size,
+        overlap_size=overlap_size,
+        do_reset=do_reset,
+    )
+
+    return JSONResponse(
+        content={
+            "signal": ResponseSignal.PROCESS_AND_PUSH_WORKFLOW_READY.value,
+            "workflow_task_id": workflow_task.id
         }
     )
 
