@@ -212,7 +212,9 @@ async def _process_project_files(task_instance, project_id: int,
 
                 "signal" : ResponseSignal.PROCESSING_SUCCESS.value,
                 "inserted_chunks_num" : num_records,
-                "number_of_processed_files" : num_files
+                "number_of_processed_files" : num_files,
+                "project_id" : project_id,
+                "do_reset" : do_reset
         }
     
 
