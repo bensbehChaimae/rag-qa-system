@@ -48,7 +48,7 @@ services:
     image: pgvector/pgvector:0.8.0-pg17
     container_name: pgvector
     ports:
-      - "5400:5432"
+      - "5432:5432"
     volumes:
       - 'pgvector:/var/lib/postgresql/data'
     env_file:
@@ -199,7 +199,7 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       timeout: 10s
       retries: 5
-    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:-minirag_redis_2222}"]
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
 
 
 
