@@ -30,7 +30,8 @@ class Settings(BaseSettings) :
     COHERE_MAX_RETRIES: int=None
 
     GENERATION_MODEL_ID_LITERAL: List[str] = None
-    GENRERATION_MODEL_ID: str=None
+    GENERATION_MODEL_ID: str=None
+    # GENERATION_MODEL_ID: str=None
     EMBEDDING_MODEL_ID: str=None
     EMBEDDING_MODEL_SIZE: int=None
 
@@ -43,7 +44,7 @@ class Settings(BaseSettings) :
     VECTOR_DB_DISTANCE_METHOD: str = None
 
     DEFAULT_LANG: str = "en"
-    PRIMAY_LANG: str = "en"
+    PRIMARY_LANG: str = "en"
 
     # Postgres database migration : 
     POSTGRES_USERNAME: str
@@ -58,6 +59,16 @@ class Settings(BaseSettings) :
     VECTOR_DB_PATH : str
     VECTOR_DB_DISTANCE_METHOD: str = None
     VECTOR_DB_PGVEC_INDEX_THRESHOLD: int = 100
+
+
+    # Celery and redis config :
+    CELERY_BROKER_URL: str = None
+    CELERY_RESULT_BACKEND: str = None
+    CELERY_TASK_SERIALIZER: str = "json"
+    CELERY_TASK_TIME_LIMIT: int = 600
+    CELERY_TASK_ACKS_LATE: bool = True
+    CELERY_WORKER_CONCURRENCY: int = 2
+    CELERY_FLOWER_PASSWORD: str = None
 
 
     # class Config:
