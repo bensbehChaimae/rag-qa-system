@@ -77,7 +77,14 @@ PRIMARY_LANG="en"
 DEFAULT_LANG="en"
 
 
-
+# ========================= Celery Task Queue Config =========================
+CELERY_BROKER_URL=""  
+CELERY_RESULT_BACKEND=""             
+CELERY_TASK_SERIALIZER="json"
+CELERY_TASK_TIME_LIMIT=600
+CELERY_TASK_ACKS_LATE=false                                                  # late acknoweldgment = true
+CELERY_WORKER_CONCURRENCY=2
+CELERY_FLOWER_PASSWORD=""
 
 
 
