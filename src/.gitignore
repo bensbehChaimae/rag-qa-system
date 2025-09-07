@@ -207,8 +207,6 @@ marimo/_lsp/
 __marimo__/
 
 
-
-# Celery files : 
-src/celerybeat-schedule.bak
-src/celerybeat-schedule.dat
-src/celerybeat-schedule.dir
+ 
+# Ignore Celery schedule files
+celerybeat-schedule.*
