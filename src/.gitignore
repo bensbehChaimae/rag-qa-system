@@ -208,3 +208,7 @@ __marimo__/
 
 
 
+# Celery files : 
+src/celerybeat-schedule.bak
+src/celerybeat-schedule.dat
+src/celerybeat-schedule.dir
