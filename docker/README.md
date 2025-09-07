@@ -1,17 +1,36 @@
-# Docker Setup for MiniRAG Application
+# Docker Setup for RAG Document Q/A System
 
-This directory contains the Docker setup for the MiniRAG application, including all necessary services for development and monitoring.
+This directory provides a complete **Dockerized environment** for the RAG-powered Document Question Answering application.  
+It includes all required services for application runtime, data storage, background processing, and monitoring.
 
-## Services
 
-- **FastAPI Application**: Main application running on Uvicorn
-- **Nginx**: Web server for serving the FastAPI application
-- **PostgreSQL (pgvector)**: Vector-enabled database for storing embeddings
-- **Postgres-Exporter**: Exports PostgreSQL metrics for Prometheus
-- **Qdrant**: Vector database for similarity search
-- **Prometheus**: Metrics collection
-- **Grafana**: Visualization dashboard for metrics
-- **Node-Exporter**: System metrics collection
+
+## Services Overview
+
+- **FastAPI (Uvicorn)** – Core API service for handling document queries and responses.
+- **Nginx** – Reverse proxy and load balancer for serving the FastAPI application.
+- **PostgreSQL (pgvector extension)** – Relational database with vector support for storing embeddings and metadata.
+- **Postgres Exporter** – Exposes PostgreSQL metrics to Prometheus.
+- **Qdrant** – High-performance vector database for similarity search and retrieval.
+- **Prometheus** – Monitoring and metrics collection service.
+- **Grafana** – Visualization and dashboarding tool for system and application metrics.
+- **Node Exporter** – Collects system-level metrics for Prometheus.
+- **Celery Worker** – Executes asynchronous background tasks.
+- **Celery Beat** – Scheduler for periodic tasks in Celery.
+- **Flower** – Web UI for monitoring Celery tasks and workers.
+- **RabbitMQ** – Message broker used by Celery for task queuing.
+- **Redis** – In-memory data store for caching and task management.
+
+
+
+### Notes
+
+- The setup is modular: you can enable/disable services depending on your use case.  
+- Monitoring is handled via the **Prometheus–Grafana stack**.  
+- Background task management relies on the **Celery–RabbitMQ–Redis stack**.  
+
+
+
 
 ## Setup Instructions
 
@@ -29,7 +48,7 @@ cp .env.example.postgres-exporter .env.postgres-exporter
 
 # Setup the Alembic configuration for the FastAPI application
 cd ..
-cd docker/minirag
+cd docker/ragdb
 cp alembic.example.ini alembic.ini
 
 ### 2. Start the services
@@ -70,6 +89,11 @@ docker compose down -v --remove-orphans
 - Prometheus: http://localhost:9090
 - Grafana: http://localhost:3000
 - Qdrant UI: http://localhost:6333/dashboard
+- Rabbitmq: http://localhost:15672 
+- Flower: http://localhost:5555  
+
+
+
 
 ## Volume Management
 
@@ -131,20 +155,39 @@ Prometheus is configured to scrape these metrics automatically.
 
 ### Visualizing Metrics in Grafana
 
-1. Log into Grafana at http://localhost:3000 (default credentials: admin/admin_password)
+1. Log into Grafana at http://localhost:3000 (credentials set up on `/docker/env/.env.grafana`)
 2. Add Prometheus as a data source (URL: http://prometheus:9090)
 3. Import dashboards for FastAPI, PostgreSQL, and Qdrant
 
-#### Dashboards URLs
+#### Dashboards URLs :
 
-https://grafana.com/grafana/dashboards/18739-fastapi-observability/
+- **FastAPI Observability**:  
+  https://grafana.com/grafana/dashboards/18739-fastapi-observability/
 
-https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+- **Node Exporter (System Metrics)**:  
+  https://grafana.com/grafana/dashboards/1860-node-exporter-full/
 
-no longer supported : https://grafana.com/grafana/dashboards/23033-qdrant/
-- create a custom qdrant dashboard .
+- **PostgreSQL Exporter**:  
+  https://grafana.com/grafana/dashboards/12485-postgresql-exporter/
 
-https://grafana.com/grafana/dashboards/12485-postgresql-exporter/
+- **Qdrant**:  
+  No official pre-built Grafana dashboard is available for Qdrant.  
+  You can create custom dashboards tailored to your metrics and use cases.
+
+
+### Celery Task Monitoring with Flower
+
+- **Flower UI** is available at: [http://localhost:5555](http://localhost:5555)  
+  Flower provides a real-time dashboard for monitoring Celery tasks, including:  
+  - Task execution status (pending, started, success, failure)  
+  - Worker health and availability  
+  - Task runtime and throughput  
+  - Retry and failure insights  
+
+- **RabbitMQ Management UI** is available at: [http://localhost:15672](http://localhost:15672)  
+  It provides insights into the message broker, queues, and Celery task traffic.
+
+
 
 
 ## Development Workflow
@@ -182,3 +225,4 @@ If you see connection errors when starting the services:
    docker compose logs --tail=100 fastapi
    docker compose logs --tail=100 pgvector
    ```
+
